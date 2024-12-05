@@ -7,31 +7,53 @@ To do this, we propose a reference raster grid for the extent of Brazil, to allo
 ![image](assets/grid-brasil-and-biomes.png)
 
 
+### Using the aligned bbox
+
+The aligned bounding box obtained using this tool is as expected by the gdal_rasterize command, as shown in the example below.
+
+```sh
+# the aligned bbox from "align_arbitrary_bbox.py"
+BBOX="-61.63338215899995 -18.041499166999966 -50.20914215899995 -7.348059166999967"
+PIXEL_SIZE="0.00009 0.00009"
+TB_NAME="name_of_the_table_where_the_vector_data_is"
+PGCONNECTION="dbname='${DB_NAME}' host=${host} port=${port} user='${user}' password='${PGPASSWORD}'"
+OUTPUT="/path/to/output/output_file_name"
+
+gdal_rasterize -tr ${PIXEL_SIZE} \
+    -te ${BBOX} \
+    -a_nodata 255 -co "COMPRESS=LZW" \
+    -ot Byte PG:"${PGCONNECTION}" \
+    -a "class_number" \
+    -sql "SELECT class_number, geom FROM public.burn_${TB_NAME}" "${OUTPUT}.tif"
+```
+
 ### Identification of available items
 
 In the "assets/" directory we have:
 
- - A compressed file named "grid_brasil_no_data.zip", with the reference grid, in GeoTiff format, ready for use.
- - A compressed file named "lm_bioma_250.zip", with the limits of the biomes of Brasil, in GeoPackage format.
+ - A compressed file named "grid_brasil_no_data.zip", with the reference grid, in GeoTiff format, ready for use;
+ - A compressed file named "lm_bioma_250.zip", with the limits of the biomes of Brasil, in GeoPackage format;
+ - Some image files to use as ilustrations of notes;
 
 In the "grid-file-build/" directory we have:
 
- - A tool, in bash-compatible shell script, to create the reference grid, if necessary.
- - Two files, "start.sh" and "run-grid-file-build.sh", in bash-compatible shell script, which can be used if the execution option is Docker, see details in [README.md](grid-file-build/README.md) file.
+ - A tool, in bash-compatible shell script, to create the reference grid, if necessary;
+ - Two files, "start.sh" and "run-grid-file-build.sh", in bash-compatible shell script, which can be used if the execution option is Docker, see details in [README.md](grid-file-build/README.md) file;
 
 In the root directory we have:
 
- - A tool provided in the file "adjust_extent.py", in python language compatible with python 3, to perform the calculation of the adjustment of an input box, using the reference grid.
- - A test script provided in the file "align_bbox_example.py", in python language compatible with python 3, to demonstrate the use of the calculation tool, using the biomes file as a base.
+ - A tool provided in the file "adjust_extent.py", in python language compatible with python 3, to perform the calculation of the adjustment of an input box, using the reference grid;
+ - A test script provided in the file "align_bbox_example.py", in python language compatible with python 3, to demonstrate the use of the calculation tool, using the biomes file as a base;
+ - A Jupyter Notebook, 
 
 
 ### How to use the tools?
 
-This session is about running the following tools:
+This section is about running the following tools:
 
- - a reference grid generator, detailed in **To generate the reference grid** session;
- - a bbox aligner, detailed in **To align arbitrary bbox** session;
- - a bbox aligner example, detailed in **To align the bbox of biomes** session;
+ - a reference grid generator, detailed in the **To generate the reference grid** section;
+ - a bbox aligner, detailed in the **To align arbitrary bbox** section;
+ - an example of bbox alignment, detailed in the **To align the bbox of biomes** section;
 
 
 #### About the environment
