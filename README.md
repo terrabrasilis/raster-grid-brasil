@@ -75,6 +75,7 @@ python3 align_arbitrary_bbox.py
 
 Alternatively, you can use Jupyter Notebook in Colab or another supported cloud environment. You can use the [bbox_align.ipynb](bbox_align.ipynb) file to do this.
 
+![image](assets/colab-result.png)
 
 #### To align the bbox of biomes
 
